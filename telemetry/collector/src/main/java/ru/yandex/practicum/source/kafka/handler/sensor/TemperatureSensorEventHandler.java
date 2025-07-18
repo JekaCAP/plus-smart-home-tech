@@ -5,11 +5,11 @@ import ru.yandex.practicum.kafka.telemetry.event.TemperatureSensorAvro;
 import ru.yandex.practicum.model.sensor.SensorEvent;
 import ru.yandex.practicum.model.sensor.TemperatureSensorEvent;
 import ru.yandex.practicum.model.sensor.enums.SensorEventType;
-import ru.yandex.practicum.source.kafka.handler.Config;
+import ru.yandex.practicum.source.kafka.handler.KafkaConfig;
 
 @Service
 public class TemperatureSensorEventHandler extends SensorEventHandler<TemperatureSensorAvro> {
-    public TemperatureSensorEventHandler(Config.KafkaEventProducer producer, Config kafkaTopics) {
+    public TemperatureSensorEventHandler(KafkaConfig.KafkaEventProducer producer, KafkaConfig kafkaTopics) {
         super(producer, kafkaTopics);
     }
 

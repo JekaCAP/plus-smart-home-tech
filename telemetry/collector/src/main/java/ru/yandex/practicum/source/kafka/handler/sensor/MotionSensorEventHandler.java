@@ -5,11 +5,11 @@ import ru.yandex.practicum.kafka.telemetry.event.MotionSensorAvro;
 import ru.yandex.practicum.model.sensor.MotionSensorEvent;
 import ru.yandex.practicum.model.sensor.SensorEvent;
 import ru.yandex.practicum.model.sensor.enums.SensorEventType;
-import ru.yandex.practicum.source.kafka.handler.Config;
+import ru.yandex.practicum.source.kafka.handler.KafkaConfig;
 
 @Service
 public class MotionSensorEventHandler extends SensorEventHandler<MotionSensorAvro> {
-    public MotionSensorEventHandler(Config.KafkaEventProducer producer, Config kafkaTopics) {
+    public MotionSensorEventHandler(KafkaConfig.KafkaEventProducer producer, KafkaConfig kafkaTopics) {
         super(producer, kafkaTopics);
     }
 

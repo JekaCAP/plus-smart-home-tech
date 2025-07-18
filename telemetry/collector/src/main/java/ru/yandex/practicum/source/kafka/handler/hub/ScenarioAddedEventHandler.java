@@ -10,11 +10,11 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioConditionAvro;
 import ru.yandex.practicum.model.hub.HubEvent;
 import ru.yandex.practicum.model.hub.ScenarioAddedEvent;
 import ru.yandex.practicum.model.hub.enums.HubEventType;
-import ru.yandex.practicum.source.kafka.handler.Config;
+import ru.yandex.practicum.source.kafka.handler.KafkaConfig;
 
 @Service
 public class ScenarioAddedEventHandler extends HubEventHandler<ScenarioAddedEventAvro> {
-    public ScenarioAddedEventHandler(Config.KafkaEventProducer producer, Config kafkaTopics) {
+    public ScenarioAddedEventHandler(KafkaConfig.KafkaEventProducer producer, KafkaConfig kafkaTopics) {
         super(producer, kafkaTopics);
     }
 

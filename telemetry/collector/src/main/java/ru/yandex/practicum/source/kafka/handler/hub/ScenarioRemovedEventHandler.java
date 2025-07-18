@@ -5,11 +5,11 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
 import ru.yandex.practicum.model.hub.HubEvent;
 import ru.yandex.practicum.model.hub.ScenarioRemovedEvent;
 import ru.yandex.practicum.model.hub.enums.HubEventType;
-import ru.yandex.practicum.source.kafka.handler.Config;
+import ru.yandex.practicum.source.kafka.handler.KafkaConfig;
 
 @Service
 public class ScenarioRemovedEventHandler extends HubEventHandler<ScenarioRemovedEventAvro> {
-    public ScenarioRemovedEventHandler(Config.KafkaEventProducer producer, Config kafkaTopics) {
+    public ScenarioRemovedEventHandler(KafkaConfig.KafkaEventProducer producer, KafkaConfig kafkaTopics) {
         super(producer, kafkaTopics);
     }
 

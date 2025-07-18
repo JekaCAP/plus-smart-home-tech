@@ -23,7 +23,7 @@ import java.util.Properties;
 @ToString
 @Configuration
 @ConfigurationProperties("collector.kafka")
-public class Config {
+public class KafkaConfig {
     private ProducerConfig producer;
 
     @Bean
