@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class AvroSerializer<T extends GenericRecord> implements Serializer<T> {
+public class GeneralAvroSerializer<T extends GenericRecord> implements Serializer<T> {
     @Override
     public byte[] serialize(String topic, T data) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
