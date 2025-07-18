@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -16,6 +17,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
 
+@Slf4j
 @Getter
 @Setter
 @ToString
@@ -39,7 +41,7 @@ public class Config {
 
         public static TopicType fromString(String type) {
             switch (type) {
-                case "sensor-events" -> {
+                case "sensors-events" -> {
                     return TopicType.SENSORS_EVENTS;
                 }
                 case "hubs-events" -> {
@@ -71,8 +73,15 @@ public class Config {
         private final EnumMap<TopicType, String> topics;
 
         public <T extends SpecificRecordBase> void send(String topic, String key, T event) {
+            log.info("Sending event with key '{}' to topic '{}'", key, topic);
             ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(topic, key, event);
-            kafkaProducer.send(record);
+            kafkaProducer.send(record, (metadata, exception) -> {
+                if (exception != null) {
+                    log.error("Failed to send event with key '{}' to topic '{}'", key, topic, exception);
+                } else {
+                    log.debug("Successfully sent event with key '{}' to topic '{}' at offset {}", key, topic, metadata.offset());
+                }
+            });
         }
     }
 }
