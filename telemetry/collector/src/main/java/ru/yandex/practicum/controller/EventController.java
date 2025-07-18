@@ -2,6 +2,7 @@ package ru.yandex.practicum.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class EventController {
     private final Map<SensorEventType, SensorEventHandler> sensorEventHandlers;
@@ -36,19 +37,29 @@ public class EventController {
 
     @PostMapping("/sensors")
     public void sensors(@Valid @RequestBody SensorEvent event) {
+        log.info("🔌 Получено событие от сенсора: type={}, deviceId={}", event.getType(), event.getId());
+
         SensorEventHandler handler = sensorEventHandlers.get(event.getType());
         if (handler == null) {
+            log.error("❌ SensorEventHandler не найден для типа: {}", event.getType());
             throw new SensorHandlerNotFound("Sensor event not found: " + event.getType());
         }
+
+        log.debug("✅ Найден обработчик: {}", handler.getClass().getSimpleName());
         handler.handle(event);
     }
 
     @PostMapping("/hubs")
     public void hubs(@Valid @RequestBody HubEvent event) {
+        log.info("🧠 Получено событие от хаба: type={}, hubId={}", event.getType(), event.getHubId());
+
         HubEventHandler handler = hubEventHandlers.get(event.getType());
         if (handler == null) {
+            log.error("❌ HubEventHandler не найден для типа: {}", event.getType());
             throw new HubHandlerNotFound("The hub event was not found: " + event.getType());
         }
+
+        log.debug("✅ Найден обработчик: {}", handler.getClass().getSimpleName());
         handler.handle(event);
     }
 }

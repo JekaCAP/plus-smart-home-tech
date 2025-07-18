@@ -1,6 +1,5 @@
 package ru.yandex.practicum.model.sensor;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,7 +9,6 @@ import ru.yandex.practicum.model.sensor.enums.SensorEventType;
 @Setter
 @ToString(callSuper = true)
 public class SwitchSensorEvent extends SensorEvent {
-    @NotBlank
     private boolean state;
 
     @Override

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.model.sensor;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,11 +9,8 @@ import ru.yandex.practicum.model.sensor.enums.SensorEventType;
 @Setter
 @ToString(callSuper = true)
 public class MotionSensorEvent extends SensorEvent {
-    @NotBlank
     private int linkQuality;
-    @NotBlank
     private boolean motion;
-    @NotBlank
     private int voltage;
 
     @Override
