@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class ScenarioAddedEvent extends HubEvent {
     @Size(min = 3, max = 255)
     @NotBlank

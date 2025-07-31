@@ -2,21 +2,30 @@ spring:
   application:
     name: collector
 
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: ru.practicum.kafka.GeneralAvroSerializer
+
 logging:
   level:
-    ru.yandex.practicum: TRACE
+    ru:
+      yandex:
+        practicum:
+          telemetry: TRACE
+      practicum:
+        kafka: INFO
     org:
       springframework: ERROR
-      apache.kafka: ERROR
+    apache:
+      kafka: WARN
 
 collector:
   kafka:
     producer:
       properties:
-        "bootstrap.servers": localhost:9092
         "client.id": "telemetry.collection"
-        "key.serializer": org.apache.kafka.common.serialization.StringSerializer
-        "value.serializer": ru.yandex.practicum.source.kafka.handler.GeneralAvroSerializer
       topics:
         sensors-events: telemetry.sensors.v1
         hubs-events: telemetry.hubs.v1

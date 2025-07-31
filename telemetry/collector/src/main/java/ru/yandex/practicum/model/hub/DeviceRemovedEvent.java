@@ -8,7 +8,7 @@ import ru.yandex.practicum.model.hub.enums.HubEventType;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class DeviceRemovedEvent extends HubEvent {
     @NotBlank
     private String id;

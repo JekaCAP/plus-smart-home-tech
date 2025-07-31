@@ -9,8 +9,8 @@ import ru.yandex.practicum.model.sensor.enums.SensorEventType;
 @Setter
 @ToString(callSuper = true)
 public class LightSensorEvent extends SensorEvent {
-    private int linkQuality;
-    private int luminosity;
+    private Integer linkQuality;
+    private Integer luminosity;
 
     @Override
     public SensorEventType getType() {
