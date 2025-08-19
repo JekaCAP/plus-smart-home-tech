@@ -20,13 +20,13 @@ public class TelemetryKafkaProducerConfig {
 
     private final CollectorKafkaProperties collectorProps;
 
-    @Value("${spring.kafka.producer.bootstrap-servers}")
+    @Value("${grpc.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.producer.key-serializer}")
+    @Value("${grpc.kafka.producer.key-serializer}")
     private String keySerializer;
 
-    @Value("${spring.kafka.producer.value-serializer}")
+    @Value("${grpc.kafka.producer.value-serializer}")
     private String valueSerializer;
 
     @Bean
@@ -50,5 +50,13 @@ public class TelemetryKafkaProducerConfig {
                 collectorProps.getTopics().getHubsEvents());
 
         return new KafkaTemplate<>(producerFactory());
+    }
+
+    public String getHubTopic() {
+        return collectorProps.getTopics().getHubsEvents();
+    }
+
+    public String getSensorTopic() {
+        return collectorProps.getTopics().getSensorsEvents();
     }
 }

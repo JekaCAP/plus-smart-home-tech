@@ -2,6 +2,11 @@ spring:
   application:
     name: collector
 
+grpc:
+  server:
+    address: 0.0.0.0
+    port: 9090
+
   kafka:
     producer:
       bootstrap-servers: localhost:9092
