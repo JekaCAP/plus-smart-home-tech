@@ -2,6 +2,10 @@ spring:
   application:
     name: collector
 
+grpc:
+  server:
+    port: 59091
+
   kafka:
     producer:
       bootstrap-servers: localhost:9092
@@ -20,6 +24,8 @@ logging:
       springframework: ERROR
     apache:
       kafka: WARN
+    io.grpc.netty: DEBUG
+    io.netty: DEBUG
 
 collector:
   kafka:
