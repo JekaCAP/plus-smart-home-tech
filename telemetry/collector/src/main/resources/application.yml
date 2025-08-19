@@ -24,6 +24,8 @@ logging:
       springframework: ERROR
     apache:
       kafka: WARN
+    io.grpc.netty: DEBUG
+    io.netty: DEBUG
 
 collector:
   kafka:
