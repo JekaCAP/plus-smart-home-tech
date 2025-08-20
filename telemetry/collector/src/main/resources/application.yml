@@ -10,7 +10,7 @@ grpc:
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: ru.practicum.kafka.GeneralAvroSerializer
+      value-serializer: serializer.GeneralAvroSerializer
 
 logging:
   level:
