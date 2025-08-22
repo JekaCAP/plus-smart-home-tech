@@ -6,11 +6,17 @@ grpc:
   server:
     port: 59091
 
+collector:
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: ru.practicum.kafka.GeneralAvroSerializer
+      properties:
+        bootstrap-servers: localhost:9092
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: ru.practicum.kafka.serializer.GeneralAvroSerializer
+        client.id: telemetry.collection
+      topics:
+        sensors-events: telemetry.sensors.v1
+        hubs-events: telemetry.hubs.v1
 
 logging:
   level:
@@ -26,12 +32,3 @@ logging:
       kafka: WARN
     io.grpc.netty: DEBUG
     io.netty: DEBUG
-
-collector:
-  kafka:
-    producer:
-      properties:
-        "client.id": "telemetry.collection"
-      topics:
-        sensors-events: telemetry.sensors.v1
-        hubs-events: telemetry.hubs.v1
