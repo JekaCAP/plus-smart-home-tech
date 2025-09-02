@@ -3,7 +3,6 @@ spring:
     name: config-server
   profiles:
     active: native
-
   cloud:
     config:
       server:
@@ -12,4 +11,11 @@ spring:
             - classpath:config/telemetry/{application}
 
 server:
-  port: 8888
+  port: 0   # случайный порт
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+    registerWithEureka: true
+    fetchRegistry: false
