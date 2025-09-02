@@ -2,12 +2,13 @@ package ru.yandex.practicum;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
-@ConfigurationPropertiesScan
+@EnableConfigServer
 @SpringBootApplication
-public class CollectorApplication {
+public class ConfigServer {
+
     public static void main(String[] args) {
-        SpringApplication.run(CollectorApplication.class, args);
+        SpringApplication.run(ConfigServer.class, args);
     }
 }
