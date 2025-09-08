@@ -33,6 +33,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <postgresql.version>42.7.7</postgresql.version>
 
         <!--       Plugins       -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -47,6 +48,12 @@
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro</artifactId>
                 <version>${avro.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
             </dependency>
 
             <dependency>
@@ -124,6 +131,14 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-    </build>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.json</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
 </project>
