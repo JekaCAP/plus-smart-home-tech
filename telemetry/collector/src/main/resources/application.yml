@@ -1,10 +1,8 @@
 spring:
   application:
     name: collector
-
   config:
     import: "configserver:"
-
   cloud:
     config:
       fail-fast: true
@@ -13,11 +11,11 @@ spring:
         max-interval: 6000
       discovery:
         enabled: true
-        serviceId: CONFIG-SERVER
-
+        serviceId: config-server
 eureka:
+  instance:
+    preferIpAddress: false
   client:
     registerWithEureka: true
-    fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
