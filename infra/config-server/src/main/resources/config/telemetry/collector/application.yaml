@@ -6,7 +6,7 @@ grpc:
   server:
     port: 59091
     netty:
-      use-epoll:
+      use-epoll: false
 
 collector:
   kafka:
