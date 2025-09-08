@@ -54,6 +54,9 @@ spring:
       isolation-level: read_committed
 
 grpc:
+  server:
+    netty:
+      use-epoll: false
   client:
     hub-router:
       address: static://localhost:59090
