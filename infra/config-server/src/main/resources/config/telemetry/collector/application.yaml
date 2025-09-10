@@ -5,6 +5,10 @@ spring:
 grpc:
   server:
     port: 59091
+  netty:
+    preferEpoll: false
+    transport: NIO
+
 
 collector:
   kafka:
