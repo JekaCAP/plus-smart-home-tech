@@ -1,33 +1,21 @@
 spring:
   application:
     name: aggregator
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: ru.practicum.kafka.serializer.GeneralAvroSerializer
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: aggregator-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: ru.practicum.kafka.deserializer.SensorEventAvroDeserializer
-      properties:
-        fetch.min.bytes: 1
-        max.poll.records: 100
-        enable.auto.commit: false
-        fetch.max.wait.ms: 500
-        max.partition.fetch.bytes: 1048576
-
-aggregator:
-  kafka:
-    topic:
-      sensors: telemetry.sensors.v1
-      snapshots: telemetry.snapshots.v1
-
-logging:
-  level:
-    ru.yandex.practicum.telemetry.aggregator: TRACE
-    ru.practicum.kafka: INFO
-    org.springframework: ERROR
-    apache.kafka: WARN
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        useRandomPolicy: true
+        max-interval: 6000
+      discovery:
+        enabled: true
+        serviceId: config-server
+eureka:
+  instance:
+    preferIpAddress: false
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

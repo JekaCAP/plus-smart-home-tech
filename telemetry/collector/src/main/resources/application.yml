@@ -1,34 +1,21 @@
 spring:
   application:
     name: collector
-
-grpc:
-  server:
-    port: 59091
-
-collector:
-  kafka:
-    producer:
-      properties:
-        bootstrap-servers: localhost:9092
-        key-serializer: org.apache.kafka.common.serialization.StringSerializer
-        value-serializer: ru.practicum.kafka.serializer.GeneralAvroSerializer
-        client.id: telemetry.collection
-      topics:
-        sensors-events: telemetry.sensors.v1
-        hubs-events: telemetry.hubs.v1
-
-logging:
-  level:
-    ru:
-      yandex:
-        practicum:
-          telemetry: TRACE
-      practicum:
-        kafka: INFO
-    org:
-      springframework: ERROR
-    apache:
-      kafka: WARN
-    io.grpc.netty: DEBUG
-    io.netty: DEBUG
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        useRandomPolicy: true
+        max-interval: 6000
+      discovery:
+        enabled: true
+        serviceId: config-server
+eureka:
+  instance:
+    preferIpAddress: false
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
