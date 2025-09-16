@@ -7,10 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.interaction.api.dto.cart.ShoppingCartDto;
 import ru.practicum.interaction.api.dto.warehouse.AddProductToWarehouseRequestDto;
 import ru.practicum.interaction.api.dto.warehouse.AddressDto;
+import ru.practicum.interaction.api.dto.warehouse.AssemblyProductForOrderFromShoppingCartRequest;
 import ru.practicum.interaction.api.dto.warehouse.BookedProductsDto;
 import ru.practicum.interaction.api.dto.warehouse.NewProductInWarehouseRequestDto;
+import ru.practicum.interaction.api.dto.warehouse.ShippedToDeliveryRequest;
 import ru.practicum.interaction.api.exception.InsufficientWarehouseStockException;
-import ru.practicum.interaction.api.exception.ProductAlreadyInWarehouseException;
 import ru.practicum.warehouse.mapper.WarehouseMapper;
 import ru.practicum.warehouse.module.ProductStorage;
 import ru.practicum.warehouse.repository.ProductStorageRepository;
@@ -18,6 +19,7 @@ import ru.practicum.warehouse.repository.ProductStorageRepository;
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.LongUnaryOperator;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         UUID productId = requestDto.getProductId();
 
         if (productStorageRepository.existsById(productId)) {
-            throw new ProductAlreadyInWarehouseException(
+            throw new IllegalStateException(
                     String.format("Товар с ID = %s уже заведен на склад", productId));
         }
 
@@ -79,6 +81,16 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    public void updateProductToWarehouse(AddProductToWarehouseRequestDto requestDto) {
+        productStorageRepository.updateQuantityAndSave(
+                requestDto.getProductId(),
+                (LongUnaryOperator) current -> current + requestDto.getQuantity()
+        );
+        log.info("Обновлено количество товара на складе: {} (+{})",
+                requestDto.getProductId(), requestDto.getQuantity());
+    }
+
+    @Override
     public AddressDto getWarehouseAddress() {
         int idx = new SecureRandom().nextInt(ADDRESSES.length);
         String address = ADDRESSES[idx];
@@ -93,8 +105,23 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public void updateProductToWarehouse(AddProductToWarehouseRequestDto requestDto) {
-        productStorageRepository.updateQuantityAndSave(requestDto.getProductId(), requestDto.getQuantity());
-        log.info("Обновлено количество товара на складе: {} (+{})", requestDto.getProductId(), requestDto.getQuantity());
+    public void shipOrder(UUID orderId, UUID deliveryId) {
+        log.info("Заказ {} отправлен на доставку {}", orderId, deliveryId);
+    }
+
+    @Override
+    public void returnProducts(UUID orderId, BookedProductsDto bookedProducts) {
+        log.info("Обработан возврат заказа {}: товары возвращены на склад", orderId);
+    }
+
+    @Override
+    public BookedProductsDto assembleOrder(AssemblyProductForOrderFromShoppingCartRequest request) {
+        log.info("Собран заказ {}: товары зарезервированы на складе", request.getOrderId());
+        return null;
+    }
+
+    @Override
+    public void shippedToDelivery(ShippedToDeliveryRequest request) {
+        log.info("Заказ {} передан в доставку {}", request.getOrderId(), request.getDeliveryId());
     }
 }
