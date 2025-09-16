@@ -7,16 +7,60 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.interaction.api.exception.BadRequestException;
-import ru.practicum.interaction.api.exception.ProductNotInWarehouseException;
+import ru.practicum.interaction.api.exception.InternalServerErrorException;
+import ru.practicum.interaction.api.exception.NoDeliveryFoundException;
+import ru.practicum.interaction.api.exception.NoOrderFoundException;
 import ru.practicum.interaction.api.exception.NotAuthorizedUserException;
-import ru.practicum.interaction.api.exception.ProductNotFoundException;
+import ru.practicum.interaction.api.exception.PaymentNotFoundException;
 import ru.practicum.interaction.api.exception.ProductAlreadyInWarehouseException;
+import ru.practicum.interaction.api.exception.ProductNotFoundException;
+import ru.practicum.interaction.api.exception.ProductNotInWarehouseException;
 
 import java.time.LocalDateTime;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoDeliveryFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoDeliveryFound(NoDeliveryFoundException ex, HttpServletRequest request) {
+        return buildResponse(
+                ex,
+                HttpStatus.NOT_FOUND,
+                "Доставка с указанным идентификатором не найдена.",
+                request
+        );
+    }
+
+    @ExceptionHandler(NoOrderFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoOrderFound(NoOrderFoundException ex, HttpServletRequest request) {
+        return buildResponse(
+                ex,
+                HttpStatus.NOT_FOUND,
+                "Заказ с указанным идентификатором не найден.",
+                request
+        );
+    }
+
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentNotFound(PaymentNotFoundException ex, HttpServletRequest request) {
+        return buildResponse(
+                ex,
+                HttpStatus.NOT_FOUND,
+                "Платёж с указанным идентификатором не найден.",
+                request
+        );
+    }
+
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerError(InternalServerErrorException ex, HttpServletRequest request) {
+        return buildResponse(
+                ex,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Внутренняя ошибка сервера. Попробуйте позже.",
+                request
+        );
+    }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException ex, HttpServletRequest request) {

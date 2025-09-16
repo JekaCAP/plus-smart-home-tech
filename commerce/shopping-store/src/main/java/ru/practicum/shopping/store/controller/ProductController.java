@@ -19,7 +19,11 @@ import ru.practicum.interaction.api.enums.store.QuantityState;
 import ru.practicum.interaction.api.feign.contract.StoreContract;
 import ru.practicum.shopping.store.service.ProductService;
 
+import java.math.BigDecimal;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,5 +67,15 @@ public class ProductController implements StoreContract {
     @GetMapping("/{productId}")
     public ProductDto getProductById(@PathVariable @NotNull UUID productId) {
         return productService.getProductById(productId);
+    }
+
+    @Override
+    @PostMapping("/products/ids")
+    public Map<UUID, ProductDto> findAllByIds(@RequestBody Set<UUID> ids) {
+        return ids.stream()
+                .collect(Collectors.toMap(
+                        id -> id,
+                        id -> ProductDto.builder().price(BigDecimal.ZERO).build()
+                ));
     }
 }
